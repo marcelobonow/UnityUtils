@@ -1,0 +1,21 @@
+syntax: glob
+*.DS_Store
+*.sln
+*.userprefs
+*.csproj
+*.pidb
+*.unitypackage
+Library
+library
+Temp
+temp
+Obj
+obj
+.vs
+*.orig
+*.orig.meta
+*.sln.docstates
+*.unityproj
+*.suo
+*.user
+*.tmp
