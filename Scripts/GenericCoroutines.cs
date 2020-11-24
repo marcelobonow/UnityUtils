@@ -10,7 +10,7 @@ public class GenericCoroutines
         yield return WaitForSeconds(time);
         effect?.Invoke();
     }
-    public static void DoAfterTime(float time, Action effect, MonoBehaviour mono) => mono.StartCoroutine(DoAfterTime(time, effect));
+    public static Coroutine DoAfterTime(float time, Action effect, MonoBehaviour mono) => mono.StartCoroutine(DoAfterTime(time, effect));
 
     private static IEnumerator DoAfterRealTime(float time, Action effect)
     {
