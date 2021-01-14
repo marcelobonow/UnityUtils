@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
-public class DebugGameObject : MonoBehaviour {
+public class GameObjectUtils
+{
     /// <summary>
     /// Retorna o caminho na hierarquia do unity do GameObject
     /// </summary>
     /// <param rewardName="go">Objeto a ser retornado a hierarquia </param>
     /// <returns></returns>
-	public static string GameObjectPath(GameObject go)
+	public static string TransformFullPath(Transform transform)
     {
-        string path = "/" + go.name;
-        while (go.transform.parent != null)
+        string path = "/" + transform.name;
+        while (transform.parent != null)
         {
-            go = go.transform.parent.gameObject;
-            path = "/" + go.name + path;
+            transform = transform.parent;
+            path = "/" + transform.name + path;
         }
         return path;
     }

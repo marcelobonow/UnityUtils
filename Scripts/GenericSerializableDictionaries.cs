@@ -10,3 +10,4 @@ using UnityEngine.UI;
 [Serializable] public class IntGameObjectDictionary : SerializableDictionary<int, GameObject> { };
 [Serializable] public class IntBoolDictionary : SerializableDictionary<int, bool> { };
 [Serializable] public class IntStringDictionary : SerializableDictionary<int, string> { };
+[Serializable] public class UIntBoolDictionary : SerializableDictionary<uint, bool> { };
