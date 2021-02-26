@@ -11,3 +11,5 @@ using UnityEngine.UI;
 [Serializable] public class IntBoolDictionary : SerializableDictionary<int, bool> { };
 [Serializable] public class IntStringDictionary : SerializableDictionary<int, string> { };
 [Serializable] public class UIntBoolDictionary : SerializableDictionary<uint, bool> { };
+[Serializable] public class UIntMaterialDictionary : SerializableDictionary<uint, Material> { };
+
