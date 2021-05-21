@@ -66,7 +66,7 @@ public class CounterDown
         {
             try
             {
-                updateListener(timeRemaning);
+                updateListener?.Invoke(timeRemaning);
             }
             catch(Exception exception)
             {
