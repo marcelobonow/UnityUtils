@@ -178,6 +178,24 @@ public static class ExtensionMethods
         transform.position = position;
     }
 
+    public static IEnumerator SmoothMovementRotation(this Transform transform, Vector3 position, Quaternion rotation, float duration)
+    {
+        var initialTime = Time.time;
+        var startPosition = transform.position;
+        var startRotation = transform.rotation;
+
+        while (Time.time < initialTime + duration)
+        {
+            var step = (Time.time - initialTime) / duration;
+            transform.position = Vector3.Lerp(startPosition, position, Mathf.SmoothStep(0f, 1f, step));
+            transform.rotation = Quaternion.Lerp(startRotation, rotation, Mathf.SmoothStep(0f, 1f, step));
+            yield return null;
+        }
+
+        transform.position = position;
+        transform.rotation = rotation;
+    }
+
     public static IEnumerator LerpTimeScale(float newTimeScale, float realTimeDuration)
     {
         var initialTime = Time.unscaledTime;
