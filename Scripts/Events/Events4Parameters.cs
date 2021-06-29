@@ -73,4 +73,5 @@ public class Events<T1, T2, T3, T4>
     }
 
     private void OrderListeners() => listeners = listeners.OrderByDescending(x => x.priority).ToList();
+    public void Clear() => listeners.Clear();
 }

@@ -69,5 +69,7 @@ public class Events
         OrderListeners();
     }
 
+    public void Clear() => listeners.Clear();
+
     private void OrderListeners() => listeners = listeners.OrderByDescending(x => x.priority).ToList();
 }
