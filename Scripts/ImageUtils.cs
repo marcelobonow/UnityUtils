@@ -14,8 +14,13 @@ public class ImageUtils
 
     public static Color HexToColor(string hex)
     {
+        if (hex == null)
+            return Color.white;
         hex = hex.Replace("0x", ""); ///Remove 0x no caso de estar formatado 0xFFFFFF
         hex = hex.Replace("#", ""); ///Remove # no caso de estar formatado #FFFFFF
+        if (hex.Length != 6 && hex.Length != 8)
+            return Color.white;
+
         var r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
         var g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
         var b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
