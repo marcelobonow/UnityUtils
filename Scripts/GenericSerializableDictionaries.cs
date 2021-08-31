@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -13,3 +14,10 @@ using UnityEngine.UI;
 [Serializable] public class UIntBoolDictionary : SerializableDictionary<uint, bool> { };
 [Serializable] public class UIntMaterialDictionary : SerializableDictionary<uint, Material> { };
 
+[Serializable] public class StringToStringListDictionary : SerializableDictionary<string, StringList> { };
+
+[Serializable]
+public class StringList 
+{
+    public List<string> list;
+}
