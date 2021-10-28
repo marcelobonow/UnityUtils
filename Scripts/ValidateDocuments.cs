@@ -22,7 +22,7 @@ public class ValidateDocuments
         if (firstRemainder > 10)
             firstRemainder = 0;
 
-        if (int.Parse(cpfNumbers[9].ToString()) != firstRemainder)
+        if (firstRemainder != int.Parse(cpfNumbers[9].ToString()))
         {
             Debug.Log("Primeiro digito verificador diferente");
             return false;
@@ -37,7 +37,7 @@ public class ValidateDocuments
         if (secondRemainder > 10)
             secondRemainder = 0;
 
-        if (int.Parse(cpfNumbers[10].ToString()) != secondRemainder)
+        if (secondRemainder != int.Parse(cpfNumbers[10].ToString()))
         {
             Debug.Log("Segundo digito verificador diferente");
             return false;
@@ -58,24 +58,24 @@ public class ValidateDocuments
 
         var firstWeights = new int[] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-        var firstDigits = cnpj.Take(12);
+        var firstDigits = cnpjDigits.Take(12);
         var firstSum = firstDigits.Select((digit, index) => int.Parse(digit.ToString()) * firstWeights[index]).Sum();
         var firstRemainder = firstSum % 11;
         var firstVerifyingDigit = firstRemainder < 2 ? 0 : 11 - firstRemainder;
 
-        if (firstVerifyingDigit != cnpj[12])
+        if (firstVerifyingDigit != int.Parse(cnpjDigits[12].ToString()))
         {
             Debug.Log("Primeiro digito verificador diferente");
             return false;
         }
 
         var secondWeights = new int[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-        var secondDigits = cnpj.Take(13);
+        var secondDigits = cnpjDigits.Take(13);
         var secondSum = secondDigits.Select((digit, index) => int.Parse(digit.ToString()) * secondWeights[index]).Sum();
         var secondRemainder = secondSum % 11;
         var secondVerifyingDigit = secondRemainder < 2 ? 0 : 11 - secondRemainder;
 
-        if (secondVerifyingDigit != cnpj[13])
+        if (secondVerifyingDigit != int.Parse(cnpjDigits[13].ToString()))
         {
             Debug.Log("Segundo digito verificador diferente");
             return false;
