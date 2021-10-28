@@ -8,7 +8,7 @@ public class ValidateDocuments
 {
     public static bool IsCPFValid(string cpf)
     {
-        var cpfNumbers = cpf.Where(char.IsDigit).ToArray();
+        var cpfNumbers = Regex.Replace(cpf, @"\D", "");
         if (cpfNumbers.Length != 11)
             return false;
 
@@ -48,7 +48,7 @@ public class ValidateDocuments
 
     public static bool IsCNPJValid(string cnpj)
     {
-        var cnpjDigits = cnpj.Where(char.IsDigit).ToArray();
+        var cnpjDigits = Regex.Replace(cnpj, @"\D", "");
         if (cnpjDigits.Length != 14)
             return false;
 
