@@ -1,50 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class ValidateDocuments
 {
-    public bool IsCPFValid(string cpf)
+    public static bool IsCPFValid(string cpf)
     {
-        if (cpf.Length != 11)
+        var cpfNumbers = cpf.Where(char.IsDigit).ToArray();
+        if (cpfNumbers.Length != 11)
             return false;
 
-        var digits = cpf.Substring(0, 9);
-        var verifyDigits = cpf.Substring(9);
-        var sum = cpf.ToCharArray().Take(9).Select((digit, index) => (10 - index) * digit).Sum();
-        var remainder = (sum * 10) / 11;
-        if (remainder > 10)
-            remainder = 0;
+        ///O CPF verifica se é valido usando os dois digitos de verificação separadamente
+        ///para o primeiro digito se multiplica cada digito por um numero, começando em 10 e decrescendo
+        ///No fim, soma todos os digitos, multiplica por 10 e pega o resto da divisão por 11
 
+        var firstVerifyDigits = cpfNumbers.Take(9);
+        var firstSum = firstVerifyDigits.Select((digit, index) => (10 - index) * int.Parse(digit.ToString())).Sum();
+        var firstRemainder = (firstSum * 10) % 11;
+        if (firstRemainder > 10)
+            firstRemainder = 0;
 
-        Debug.Log(sum);
-        for (int i = 0; i < 9; i++)
+        if (int.Parse(cpfNumbers[9].ToString()) != firstRemainder)
         {
-            sum += (10 - i) * cpf[i];
+            Debug.Log("Primeiro digito verificador diferente");
+            return false;
+        }
+
+        ///Para o segundo digito se verifica de forma similar
+        ///a diferença é que agora multiplicamos começando do 11, e incluimos o primeiro digito verificador
+
+        var secondVerifyDigits = cpfNumbers.Take(10);
+        var secondSum = secondVerifyDigits.Select((digit, index) => (11 - index) * int.Parse(digit.ToString())).Sum();
+        var secondRemainder = (secondSum * 10) % 11;
+        if (secondRemainder > 10)
+            secondRemainder = 0;
+
+        if (int.Parse(cpfNumbers[10].ToString()) != secondRemainder)
+        {
+            Debug.Log("Segundo digito verificador diferente");
+            return false;
         }
 
         return true;
     }
-    //function TestaCPF(strCPF)
-    //{
-    //    var Soma;
-    //    var Resto;
-    //    Soma = 0;
-    //    if (strCPF == "00000000000") return false;
-
-    //    for (i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-    //    Resto = (Soma * 10) % 11;
-
-    //    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    //    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
-
-    //    Soma = 0;
-    //    for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
-    //    Resto = (Soma * 10) % 11;
-
-    //    if ((Resto == 10) || (Resto == 11)) Resto = 0;
-    //    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
-    //    return true;
-    //}
 }
