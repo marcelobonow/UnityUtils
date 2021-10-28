@@ -45,4 +45,42 @@ public class ValidateDocuments
 
         return true;
     }
+
+    public static bool IsCNPJValid(string cnpj)
+    {
+        var cnpjDigits = cnpj.Where(char.IsDigit).ToArray();
+        if (cnpjDigits.Length != 14)
+            return false;
+
+        ///O CPF verifica se é valido usando os dois digitos de verificação separadamente
+        ///para o primeiro digito se multiplica cada digito por um numero, começando em 10 e decrescendo
+        ///No fim, soma todos os digitos, multiplica por 10 e pega o resto da divisão por 11
+
+        var firstWeights = new int[] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+        var firstDigits = cnpj.Take(12);
+        var firstSum = firstDigits.Select((digit, index) => int.Parse(digit.ToString()) * firstWeights[index]).Sum();
+        var firstRemainder = firstSum % 11;
+        var firstVerifyingDigit = firstRemainder < 2 ? 0 : 11 - firstRemainder;
+
+        if (firstVerifyingDigit != cnpj[12])
+        {
+            Debug.Log("Primeiro digito verificador diferente");
+            return false;
+        }
+
+        var secondWeights = new int[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+        var secondDigits = cnpj.Take(13);
+        var secondSum = secondDigits.Select((digit, index) => int.Parse(digit.ToString()) * secondWeights[index]).Sum();
+        var secondRemainder = secondSum % 11;
+        var secondVerifyingDigit = secondRemainder < 2 ? 0 : 11 - secondRemainder;
+
+        if (secondVerifyingDigit != cnpj[13])
+        {
+            Debug.Log("Segundo digito verificador diferente");
+            return false;
+        }
+
+        return true;
+    }
 }
