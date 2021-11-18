@@ -19,7 +19,7 @@ public class ValidateDocuments
         var firstVerifyDigits = cpfNumbers.Take(9);
         var firstSum = firstVerifyDigits.Select((digit, index) => (10 - index) * int.Parse(digit.ToString())).Sum();
         var firstRemainder = (firstSum * 10) % 11;
-        if (firstRemainder > 10)
+        if (firstRemainder >= 10)
             firstRemainder = 0;
 
         if (firstRemainder != int.Parse(cpfNumbers[9].ToString()))
@@ -34,7 +34,7 @@ public class ValidateDocuments
         var secondVerifyDigits = cpfNumbers.Take(10);
         var secondSum = secondVerifyDigits.Select((digit, index) => (11 - index) * int.Parse(digit.ToString())).Sum();
         var secondRemainder = (secondSum * 10) % 11;
-        if (secondRemainder > 10)
+        if (secondRemainder >= 10)
             secondRemainder = 0;
 
         if (secondRemainder != int.Parse(cpfNumbers[10].ToString()))
