@@ -38,6 +38,13 @@ public static class ExtensionMethods
             if (i != image)
                 i.color = Color.gray;
     }
+    public static void ChangeAlpha(this Image image, float alpha)
+    {
+        var tempColor = image.color;
+        tempColor.a = alpha;
+        image.color = tempColor;
+    }
+
     public static void Clear(this Transform transform)
     {
         foreach (Transform child in transform)
