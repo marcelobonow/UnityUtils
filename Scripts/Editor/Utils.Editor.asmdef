@@ -1,0 +1,18 @@
+{
+    "name": "utils.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d3b7d5591d674814b9d0c78448fc99ef"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
