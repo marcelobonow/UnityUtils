@@ -28,6 +28,13 @@ public class GenericCoroutines
         effect?.Invoke();
     }
 
+    public static Coroutine DoOnEndOfFrame(Action effect, MonoBehaviour mono) => mono.StartCoroutine(DoOnEndOfFrame(effect));
+    private static IEnumerator DoOnEndOfFrame(Action effect)
+    {
+        yield return new WaitForEndOfFrame();
+        effect();
+    }
+
     public static IEnumerator WaitForSeconds(float seconds)
     {
         var startTime = Time.time;
