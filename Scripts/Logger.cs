@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class Logger : MonoBehaviour
 {
+    public static bool isDebug = false;
     private const bool writeFiles = true;
     private static readonly long maxFileSize = 10 * 1024 * 1024;
     private static readonly float logInterval = 30;
@@ -22,7 +23,7 @@ public class Logger : MonoBehaviour
     {
         path = Application.persistentDataPath;
         fullPath = path + "/log.txt";
-        Debug.Log("Logando no arquivo: " + Application.persistentDataPath);
+        UnityEngine.Debug.Log("Logando no arquivo: " + Application.persistentDataPath);
         Application.logMessageReceived += OnLog;
         buffer = new StringBuilder();
         StartCoroutine(WriteFileDaemon());
@@ -52,13 +53,13 @@ public class Logger : MonoBehaviour
         var timeStamp = "[" + DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss") + "] ";
         if (logLevel == LogType.Error)
         {
-            Debug.LogError($"{timeStamp} Error: {message}", emitter);
+            UnityEngine.Debug.LogError($"{timeStamp} Error: {message}", emitter);
         }
         else if (logLevel == LogType.Warning)
         {
             var messageText = $"{timeStamp} Warning: {message}";
             if (isLogEnabled)
-                Debug.LogWarning(messageText, emitter);
+                UnityEngine.Debug.LogWarning(messageText, emitter);
             else
                 AddtoBuffer(messageText);
         }
@@ -66,14 +67,22 @@ public class Logger : MonoBehaviour
         {
             var messageText = $"{timeStamp} Info: {message}";
             if (isLogEnabled)
-                Debug.Log(messageText, emitter);
+                UnityEngine.Debug.Log(messageText, emitter);
             else
                 AddtoBuffer(messageText);
         }
     }
+
+    public static void Debug(object message, GameObject emitter = null)
+    {
+        if (!isDebug)
+            return;
+
+        Log(message, LogType.Log, emitter);
+    }
     public static void LogWarning(object message) => Log(message, LogType.Warning);
     public static void LogError(object message) => Log(message, LogType.Error);
-    public static void LogError(object message, object context) => Log(message, LogType.Error);
+    public static void LogError(object message, GameObject emitter) => Log(message, LogType.Error, emitter);
 
     private IEnumerator WriteFileDaemon()
     {
@@ -115,7 +124,7 @@ public class Logger : MonoBehaviour
             }
             catch
             {
-                Debug.LogWarning("Não foi possivel salvar o log, adicionando ao buffer");
+                UnityEngine.Debug.LogWarning("Não foi possivel salvar o log, adicionando ao buffer");
             }
         }
     }

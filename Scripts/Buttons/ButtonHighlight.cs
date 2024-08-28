@@ -13,6 +13,12 @@ public class ButtonHighlight : MonoBehaviour
     [SerializeField]
     private Image normalImage;
 
+    public void HighlightButton(bool isHighlit)
+    {
+        normalImage.gameObject.SetActive(!isHighlit);
+        highlightedImage.gameObject.SetActive(isHighlit);
+        //button.targetGraphic = highlightedImage;
+    }
     public void HighlightButton()
     {
         normalImage.gameObject.SetActive(false);

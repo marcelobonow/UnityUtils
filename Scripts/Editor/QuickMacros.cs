@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,8 @@ public class QuickMacros : EditorWindow
         functionSignatures.Add("revert_prefabs", RevertPrefabs);
         functionSignatures.Add("apply_prefabs", ApplyPrefabs);
         functionSignatures.Add("set_prefs", SetPlayerPrefs);
+        functionSignatures.Add("centralize", Centralize);
+        functionSignatures.Add("circularize", Circularize);
         hasInit = true;
     }
 
@@ -95,6 +98,35 @@ public class QuickMacros : EditorWindow
         }
         return -1;
     }
+
+    public static int Centralize(string[] args)
+    {
+        var selection = Selection.gameObjects;
+        if (selection.Length <= 0)
+            return -1;
+        Centralize(selection[0]);
+        return 0;
+    }
+
+    public static int Circularize(string[] args)
+    {
+        var selection = Selection.gameObjects;
+        var objectsOrdered = selection.OrderBy(selected => selected.name).ToList();
+        if (selection.Length <= 0)
+            return -1;
+        for (int i = 0; i < objectsOrdered.Count; i++)
+        {
+            ///Máximo 10
+            var maxQuantity = int.Parse(args[1]);
+            var radius = float.Parse(args[2]);
+            var offset = args.Length >= 4 ? float.Parse(args[3]) : 0f;
+            var degree = 360 / maxQuantity * i * Mathf.Deg2Rad;
+            objectsOrdered[i].transform.localPosition = new Vector2(Mathf.Cos(degree + offset) * radius, Mathf.Sin(degree + offset) * radius);
+        }
+        Debug.Log($"Colocou {objectsOrdered.Count} objetos em circulo");
+        return 0;
+    }
+
     public static int SetPlayerPrefs(string[] args)
     {
         if (args.Length < 4)
@@ -117,5 +149,35 @@ public class QuickMacros : EditorWindow
         }
         Debug.Log($"Player pref {args[2]} was set with value {args[3]}");
         return 0;
+    }
+
+    private static GameObject Centralize(GameObject gameObject)
+    {
+        var meshFilters = gameObject.GetComponentsInChildren<MeshFilter>(true);
+        var maxBounds = Vector3.negativeInfinity;
+        var minBounds = Vector3.positiveInfinity;
+        foreach (var meshFilter in meshFilters)
+        {
+            var bounds = meshFilter.sharedMesh.bounds;
+            var localPosition = meshFilter.transform.position;
+            var vertices = meshFilter.sharedMesh.vertices;
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                maxBounds = Vector3.Max(maxBounds, meshFilter.transform.TransformPoint(vertices[i]));
+                minBounds = Vector3.Min(minBounds, meshFilter.transform.TransformPoint(vertices[i]));
+            }
+        }
+
+        var center = (maxBounds + minBounds) / 2f;
+        var newGameObject = new GameObject();
+        newGameObject.name = gameObject.name;
+        gameObject.transform.parent = newGameObject.transform;
+        gameObject.transform.position -= center;
+        newGameObject.transform.position = Vector3.zero;
+
+        var collider = gameObject.AddComponent<BoxCollider>();
+        collider.center = center;
+        collider.size = (maxBounds - minBounds);
+        return newGameObject;
     }
 }
