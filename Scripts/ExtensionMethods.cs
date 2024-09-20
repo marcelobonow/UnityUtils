@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -64,6 +65,8 @@ public static class ExtensionMethods
         }
     }
     public static T GetRandom<T>(this IList<T> list) => list[Random.Range(0, list.Count)];
+    public static T GetRandom<T>(this IEnumerable<T> list) => list.ElementAt(Random.Range(0, list.Count()));
+
     public static T GetLast<T>(this IList<T> list) => list[list.Count - 1];
 
     public static bool HasCharacter(this string text)
