@@ -32,6 +32,7 @@ public class ScriptedAnimationController : MonoBehaviour
         var randomValueX = Random.Range(-config.spread, config.spread);
         var randomValueY = Random.Range(-config.spread, config.spread);
         midPoint = new Vector3(transform.position.x + randomValueX, transform.position.y + randomValueY, transform.position.z);
+
         iTween.MoveTo(gameObject, iTween.Hash("position", midPoint,
             "time", timeOffset, "easeType", iTween.EaseType.easeOutQuart));
         iTween.ScaleTo(gameObject, iTween.Hash("scale", Vector3.one * config.scale,
