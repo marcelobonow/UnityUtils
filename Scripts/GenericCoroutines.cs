@@ -60,6 +60,7 @@ public class GenericCoroutines
             effect?.Invoke(step);
             yield return null;
         }
+        effect?.Invoke(1);
         onFinish?.Invoke();
     }
 }
