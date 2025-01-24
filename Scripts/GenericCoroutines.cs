@@ -42,6 +42,11 @@ public class GenericCoroutines
       yield return null;
   }
 
+  public static Coroutine Animate(MonoBehaviour mono, float duration, Action<float> effect, Action onFinish)
+  {
+    return mono.StartCoroutine(Animate(duration, effect, onFinish));
+  }
+
   ///Can call with 1 value two times
   public static IEnumerator Animate(float duration, Action<float> effect, Action onFinish)
   {
@@ -52,6 +57,8 @@ public class GenericCoroutines
       effect?.Invoke(step);
       yield return null;
     }
+
+    effect?.Invoke(1f);
     onFinish?.Invoke();
   }
 }
