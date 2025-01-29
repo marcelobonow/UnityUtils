@@ -1,11 +1,12 @@
-using Riten.Native.Cursors;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
+#if USE_NATIVE_CURSOR
+using Riten.Native.Cursors;
+#endif
 
 public class ClickableLink : MonoBehaviour, IPointerClickHandler, IPointerMoveHandler, IPointerExitHandler
 {
@@ -26,12 +27,16 @@ public class ClickableLink : MonoBehaviour, IPointerClickHandler, IPointerMoveHa
     public void OnPointerMove(PointerEventData eventData)
     {
         var index = TMP_TextUtilities.FindIntersectingLink(text, Input.mousePosition, sceneCamera);
+#if USE_NATIVE_CURSOR
         NativeCursor.SetCursor(index >= 0 ? NTCursors.Link : NTCursors.Default);
+#endif
     }
 
     public void OnPointerExit(PointerEventData data)
     {
+#if USE_NATIVE_CURSOR
         NativeCursor.SetCursor(NTCursors.Default);
+#endif
     }
 
     public void OnPointerClick(PointerEventData eventData)
