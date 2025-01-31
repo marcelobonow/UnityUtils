@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,15 @@ public class DisabledGameObjectInitializer : MonoBehaviour
             scripts.AddRange(go.GetComponentsInChildren<IDisabledGameObjectInitializable>(true));
         DestroyImmediate(dontDestroyOnLoadAccessor);
         foreach (var script in scripts)
-            script.Initialize();
+        {
+            try
+            {
+                script.Initialize();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError("Erro inicializando script: " + exception);
+            }
+        }
     }
 }
