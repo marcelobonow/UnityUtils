@@ -280,4 +280,13 @@ public static class ExtensionMethods
 
     public static string ToTitleCase(this string text) => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(text.ToLower());
 
+    public static bool TryGetComponentInObjectOrParent<T>(this Transform transform, out T component) where T : Component
+    {
+        component = transform.GetComponent<T>();
+        if (component == null && transform.parent != null)
+            component = transform.parent.GetComponent<T>();
+
+        return component != null;
+    }
+
 }
