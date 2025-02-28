@@ -154,6 +154,13 @@ public static class ExtensionMethods
         return result;
     }
 
+    public static Vector2 XY(this Vector4 vector) => new Vector2(vector.x, vector.y);
+    public static Vector2 ZW(this Vector4 vector) => new Vector2(vector.z, vector.w);
+    public static Vector2 MultiplyAndSum(this Vector4 vector4, Vector2 vector2)
+    {
+        return vector4.XY() * vector2 + vector4.ZW();
+    }
+
     public static IEnumerator AnimateValueChange(this TextMeshProUGUI text, int oldValue, int newValue, float duration)
     {
         var initialTime = Time.time;
